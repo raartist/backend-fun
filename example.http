@@ -1,0 +1,9 @@
+//commands to run post service in powershell
+
+POST http://localhost:3000/users
+content-type: application/json
+
+{
+    "name":"aaron"
+}
+

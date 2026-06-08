@@ -2,6 +2,28 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+
+// This pattern is heavily used for:
+
+// Authentication middleware
+// Authorization
+// Logging
+// Validation
+// Rate limiting
+app.use((req,res,next)=>{
+    const authenticated=false;
+
+   if(!authenticated){
+
+      return res.status(401).json({
+         message:"unauthorized"
+      });
+
+   }
+
+   next();
+});
+
 const usersRoutes = require('./routes/users');
 
 app.use('/users',usersRoutes);

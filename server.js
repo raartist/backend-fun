@@ -10,22 +10,8 @@ app.use(express.json());
 // Logging
 // Validation
 // Rate limiting
-app.use((req,res,next)=>{
-    const authenticated=false;
-
-   if(!authenticated){
-
-      return res.status(401).json({
-         message:"unauthorized"
-      });
-
-   }
-
-   next();
-});
 
 const usersRoutes = require('./routes/users');
-
 app.use('/users',usersRoutes);
 
 //Home

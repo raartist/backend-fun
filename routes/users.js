@@ -62,10 +62,34 @@ router.post("/", async(req,res)=>{
 
 });
 
-// router.post("/",(req,res)=>{
-//     users.push(req.body);
-//     res.json({success:true})
-// })
+router.patch("/:id",async(req,res)=>{
+
+   const id = req.params.id;
+    const {name,email}=req.body;
+
+    if(!name && !email){
+        return res.status(400).json({error:"Name or email is required"});
+    }
+
+    try{
+        const result = await db.query(
+            `
+            UPDATE users
+            SET name = coalesce($1, name), email = coalesce($2, email)
+            WHERE id = $3
+            RETURNING *
+            `,
+            [name,email,id]
+        );
+        if(result.rows.length===0){
+            return res.status(404).json({error:"User not found"});
+        }
+        res.json(result.rows[0]);
+    }catch(err){
+        console.error(err);
+        res.status(500).json({error:"Internal Server Error"});
+    }
+});
 
 router.get(
    "/profile",

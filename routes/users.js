@@ -4,11 +4,30 @@ const authMiddleware = require('../auth/auth');
 
 const db = require('../db');
 
+router.get("/:id",async(req,res)=>{
+    const id = req.params.id;
+    try{
+        const user = await db.query("select * from users where id = $1",[id]);
+        if(user.rows.length===0){
+            return res.status(404).json({error:"User not found"});
+        }
+        res.json(user.rows[0]);
+    }catch(err){
+        console.error(err);
+        res.status(500).json({error:"Internal Server Error"});
+    }
+});
 
 
 router.get("/",async(req,res)=>{
+    const {search} = req.query;
     try{
-        const users = await db.query("select * from users");
+        let users;
+        if(search){
+            users = await db.query("select * from users where name ILIKE $1",[`%${search}%`]);
+        }else{
+            users = await db.query("select * from users");
+        }
         // console.log(users);
         res.json(users.rows);
     }catch(err){

@@ -109,7 +109,42 @@ router.post("/register",async(req,res)=>{
    res.status(201).json(result.rows[0]);
 });
 
+router.post("/login",async(req,res)=>{
+    const {email,password} = req.body;
 
+    const result = await db.query(
+      `
+      SELECT *
+      FROM users
+      WHERE email = $1
+      `,
+      [email]
+   );
+
+   const user = result.rows[0];
+
+   if(!user){
+      return res.status(401).json({
+         error: "Invalid credentials"
+      });
+   }
+
+    const isValid = await bcrypt.compare(
+      password,
+      user.password
+   );
+
+   if(!isValid){
+      return res.status(401).json({
+         error: "Invalid credentials"
+      });
+   }
+
+   res.json({
+      message: "Login successful"
+   });
+
+});
 
 router.get(
    "/profile",

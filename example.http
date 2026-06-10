@@ -9,13 +9,21 @@
 
 //test authentication
 
-POST http://localhost:3000/users
+# POST http://localhost:3000/users/register
+# content-type: application/json
+
+# {
+#     "name":"Rishabh",
+#     "email":"ramu@example.com",
+#         "password":"1234"
+# }
+
+POST http://localhost:3000/users/login
 content-type: application/json
 
 {
-    "name":"Rishabh",
-    "email":"babu@example.com",
-        "password":"1234"
+    "email":"ramu@example.com",
+    "password":"1234"
 }
 
 #get user with id parameter

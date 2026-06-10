@@ -2,8 +2,16 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-const usersRoutes = require('./routes/users');
 
+// This pattern is heavily used for:
+
+// Authentication middleware
+// Authorization
+// Logging
+// Validation
+// Rate limiting
+
+const usersRoutes = require('./routes/users');
 app.use('/users',usersRoutes);
 
 //Home

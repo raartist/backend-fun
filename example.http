@@ -1,9 +1,39 @@
 //commands to run post service in powershell
 
-POST http://localhost:3000/users
+# POST http://localhost:3000/users
+# content-type: application/json
+
+# {
+#     "name":"aaron"
+# }
+
+//test authentication
+
+# POST http://localhost:3000/users/register
+# content-type: application/json
+
+# {
+#     "name":"Rishabh",
+#     "email":"ramu@example.com",
+#         "password":"1234"
+# }
+
+POST http://localhost:3000/users/login
 content-type: application/json
 
 {
-    "name":"aaron"
+    "email":"ramu@example.com",
+    "password":"1234"
 }
 
+#get user with id parameter
+#  GET http://localhost:3000/users?search=rishabh
+
+# update user with id parameter
+#  PUT http://localhost:3000/users/1
+#     content-type: application/json
+    
+#     {
+#         "name":"Rohan",
+#         "email":"rohan@example.com"
+#     }

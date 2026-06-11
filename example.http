@@ -18,13 +18,13 @@
 #         "password":"1234"
 # }
 
-POST http://localhost:3000/users/login
-content-type: application/json
+# POST http://localhost:3000/users/login
+# content-type: application/json
 
-{
-    "email":"ramu@example.com",
-    "password":"1234"
-}
+# {
+#     "email":"ramu@example.com",
+#     "password":"1234"
+# }
 
 #get user with id parameter
 #  GET http://localhost:3000/users?search=rishabh
@@ -37,3 +37,7 @@ content-type: application/json
 #         "name":"Rohan",
 #         "email":"rohan@example.com"
 #     }
+
+# test jwt token for authentication
+GET http://localhost:3000/users/profile
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJyYW11QGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMTYxNzM3LCJleHAiOjE3ODExNjUzMzd9.1ZHIUFXavIQ758HdwjODLexO6Uchy7-5OSr_K9OQvz0

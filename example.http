@@ -39,5 +39,19 @@
 #     }
 
 # test jwt token for authentication
-GET http://localhost:3000/users/profile
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJyYW11QGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMTYxNzM3LCJleHAiOjE3ODExNjUzMzd9.1ZHIUFXavIQ758HdwjODLexO6Uchy7-5OSr_K9OQvz0
+# GET http://localhost:3000/users/profile
+# Authorization: hjgjhg
+
+# post posts with Authorization: 
+# POST http://localhost:3000/users/posts
+# content-type: application/json
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJyYW11QGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjAwNTM0LCJleHAiOjE3ODEyMDQxMzR9.ZpLEJ7YkfUFQ_WOzJvmG9y8DWAscP2eE2dbPp0yk3X4
+
+# {
+#     "title":"My second Post",
+#     "content":"This is the content of my second post."
+# }
+
+# get all posts with username
+GET http://localhost:3000/users/all-posts-with-username
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJyYW11QGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjAwNTM0LCJleHAiOjE3ODEyMDQxMzR9.ZpLEJ7YkfUFQ_WOzJvmG9y8DWAscP2eE2dbPp0yk3X4

@@ -147,4 +147,17 @@ router.post("/login", async (req, res) => {
   });
 });
 
+router.post("/posts", authMiddleware, async (req, res) => {
+  const { title, content } = req.body;
+  const result = await db.query(
+    `
+      INSERT INTO posts(title,content,user_id)
+      VALUES($1,$2,$3)
+        RETURNING title,content
+      `,
+    [title, content, req.user.id],
+  );
+  res.status(201).json(result.rows[0]);
+});
+
 module.exports = router;

@@ -14,17 +14,6 @@ router.get("/profile", authMiddleware, async (req, res) => {
   });
 });
 
-router.get("/all-posts-with-username", authMiddleware, async (req, res) => {
-  const result = await db.query(
-    `
-      SELECT p.title, p.content, u.name as username
-      FROM posts p
-      JOIN users u ON p.user_id = u.id
-    `,
-  );
-  res.json(result.rows);
-});
-
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
   try {
@@ -150,7 +139,7 @@ router.post("/login", async (req, res) => {
     });
   }
 
-  const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: "24h" });
 
   res.json({
     message: "Login successful",

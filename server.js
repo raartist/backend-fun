@@ -13,8 +13,10 @@ dotenv.config();
 // Rate limiting
 
 const usersRoutes = require("./routes/users");
+const postsRoutes = require("./routes/posts");
 const authMiddleware = require("./auth/auth");
 app.use("/users", usersRoutes);
+app.use("/posts", postsRoutes);
 
 //Home
 app.get("/", (req, res) => {

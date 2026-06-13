@@ -13,8 +13,8 @@
 # content-type: application/json
 
 # {
-#     "name":"Rishabh",
-#     "email":"ramu@example.com",
+#     "name":"Anuj",
+#     "email":"anuj@example.com",
 #         "password":"1234"
 # }
 
@@ -22,7 +22,7 @@
 # content-type: application/json
 
 # {
-#     "email":"ramu@example.com",
+#     "email":"anuj@example.com",
 #     "password":"1234"
 # }
 
@@ -45,13 +45,12 @@
 # post posts with Authorization: 
 # POST http://localhost:3000/users/posts
 # content-type: application/json
-# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJyYW11QGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjAwNTM0LCJleHAiOjE3ODEyMDQxMzR9.ZpLEJ7YkfUFQ_WOzJvmG9y8DWAscP2eE2dbPp0yk3X4
-
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
 # {
-#     "title":"My second Post",
-#     "content":"This is the content of my second post."
+#     "title":"My anuj Post",
+#     "content":"This is the content of my anuj post."
 # }
 
 # get all posts with username
-GET http://localhost:3000/users/all-posts-with-username
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJyYW11QGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjAwNTM0LCJleHAiOjE3ODEyMDQxMzR9.ZpLEJ7YkfUFQ_WOzJvmG9y8DWAscP2eE2dbPp0yk3X4
+GET http://localhost:3000/posts/all-posts-with-username
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs

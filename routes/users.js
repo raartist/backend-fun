@@ -147,17 +147,28 @@ router.post("/login", async (req, res) => {
   });
 });
 
-router.post("/posts", authMiddleware, async (req, res) => {
-  const { title, content } = req.body;
-  const result = await db.query(
-    `
-      INSERT INTO posts(title,content,user_id)
-      VALUES($1,$2,$3)
-        RETURNING title,content
-      `,
-    [title, content, req.user.id],
-  );
-  res.status(201).json(result.rows[0]);
+router.get("/:id/posts", authMiddleware, async (req, res) => {
+  const userId = Number(req.params.id);
+
+  if (Number.isNaN(userId)) {
+    return res.status(400).json({
+      error: "Invalid user ID",
+    });
+  }
+  try {
+    const result = await db.query(
+      `
+            SELECT p.id, p.title, p.content
+            FROM posts p
+            WHERE p.user_id = $1
+            `,
+      [userId],
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 module.exports = router;

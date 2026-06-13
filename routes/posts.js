@@ -131,4 +131,39 @@ router.patch("/:id", authMiddleware, async (req, res) => {
   }
 });
 
+router.delete("/:id", authMiddleware, async (req, res) => {
+  const postId = Number(req.params.id);
+  if (Number.isNaN(postId)) {
+    return res.status(400).json({
+      error: "Invalid post ID",
+    });
+  }
+  try {
+    const postResult = await db.query(
+      `
+            SELECT * FROM posts WHERE id = $1
+            `,
+      [postId],
+    );
+    if (!postResult.rows[0]) {
+      return res.status(404).json({
+        error: "Post not found",
+      });
+    } else if (postResult.rows[0]?.user_id !== req.user.id) {
+      return res.status(403).json({
+        error: "You are not authorized to delete this post",
+      });
+    }
+
+    const deletedPost = await db.query(`DELETE FROM posts WHERE id = $1 RETURNING *`, [postId]);
+    res.json({
+      message: "Post deleted successfully",
+      post: deletedPost.rows[0],
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

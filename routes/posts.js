@@ -73,4 +73,62 @@ router.get("/all-posts-with-username", authMiddleware, async (req, res) => {
   }
 });
 
+router.patch("/:id", authMiddleware, async (req, res) => {
+  const postId = Number(req.params.id);
+  const { title, content } = req.body;
+
+  if (Number.isNaN(postId)) {
+    return res.status(400).json({
+      error: "Invalid post ID",
+    });
+  }
+
+  if (title === undefined && content === undefined) {
+    return res.status(400).json({
+      error: "At least one of title or content must be provided",
+    });
+  }
+  if (
+    (typeof title === "string" && title.trim() === "") ||
+    (typeof content === "string" && content.trim() === "")
+  ) {
+    return res.status(400).json({
+      error: "Empty values are not allowed for title or content",
+    });
+  }
+  try {
+    const postResult = await db.query(
+      `
+        SELECT * FROM posts WHERE id = $1
+        `,
+      [postId],
+    );
+
+    if (!postResult.rows[0]) {
+      return res.status(404).json({
+        error: "Post not found",
+      });
+    } else if (postResult.rows[0]?.user_id !== req.user.id) {
+      return res.status(403).json({
+        error: "You are not authorized to update this post",
+      });
+    }
+    const result = await db.query(
+      `
+      UPDATE posts
+      SET title = coalesce($1, title), content = coalesce($2, content)
+      WHERE id = $3
+        RETURNING *
+      `,
+      [title, content, postId],
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
+});
+
 module.exports = router;

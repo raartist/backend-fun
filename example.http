@@ -13,18 +13,18 @@
 # content-type: application/json
 
 # {
-#     "name":"Rishabh",
-#     "email":"ramu@example.com",
+#     "name":"Anuj",
+#     "email":"anuj@example.com",
 #         "password":"1234"
 # }
 
-POST http://localhost:3000/users/login
-content-type: application/json
+# POST http://localhost:3000/users/login
+# content-type: application/json
 
-{
-    "email":"ramu@example.com",
-    "password":"1234"
-}
+# {
+#     "email":"anuj@example.com",
+#     "password":"1234"
+# }
 
 #get user with id parameter
 #  GET http://localhost:3000/users?search=rishabh
@@ -37,3 +37,42 @@ content-type: application/json
 #         "name":"Rohan",
 #         "email":"rohan@example.com"
 #     }
+
+# test jwt token for authentication
+# GET http://localhost:3000/users/profile
+# Authorization: hjgjhg
+
+# post posts with Authorization: 
+# POST http://localhost:3000/posts
+# content-type: application/json
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
+
+# {
+#     "title":"My anuj second Post",
+#     "content":"This is the second content of my anuj post."
+# }
+
+# get all posts with username
+# GET http://localhost:3000/posts/all-posts-with-username
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
+
+# get posts by user id
+# GET http://localhost:3000/users/8/posts
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
+
+# get all posts with username and userId
+# GET http://localhost:3000/posts?userId=6
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
+
+# patch request to update post
+# PATCH http://localhost:3000/posts/4
+# content-type: application/json
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
+
+# {
+#     "title":"Updated Post Title by Anuj 4"
+# }
+
+# delete post with id
+DELETE http://localhost:3000/posts/5
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs

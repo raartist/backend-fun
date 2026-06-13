@@ -43,12 +43,13 @@
 # Authorization: hjgjhg
 
 # post posts with Authorization: 
-# POST http://localhost:3000/users/posts
+# POST http://localhost:3000/posts
 # content-type: application/json
 # Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
+
 # {
-#     "title":"My anuj Post",
-#     "content":"This is the content of my anuj post."
+#     "title":"My anuj second Post",
+#     "content":"This is the second content of my anuj post."
 # }
 
 # get all posts with username
@@ -60,5 +61,5 @@
 # Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
 
 # get all posts with username and userId
-GET http://localhost:3000/posts?userId=6
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
+# GET http://localhost:3000/posts?userId=6
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs

@@ -5,16 +5,27 @@ const db = require("../db");
 
 router.post("/", authMiddleware, async (req, res) => {
   const { title, content } = req.body;
-  const { userId } = req.query;
-  const result = await db.query(
-    `
+  if (!title?.trim() || !content?.trim()) {
+    return res.status(400).json({
+      error: "Title and content are required",
+    });
+  }
+  try {
+    const result = await db.query(
+      `
       INSERT INTO posts(title,content,user_id)
       VALUES($1,$2,$3)
-        RETURNING title,content
+        RETURNING *
       `,
-    [title, content, req.user.id],
-  );
-  res.status(201).json(result.rows[0]);
+      [title, content, req.user.id],
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
 });
 
 router.get("/", authMiddleware, async (req, res) => {

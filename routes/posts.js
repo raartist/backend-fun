@@ -208,4 +208,41 @@ router.post("/:id/comments", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/:id/comments", authMiddleware, async (req, res) => {
+  const postId = Number(req.params.id);
+
+  if (Number.isNaN(postId)) {
+    return res.status(400).json({
+      error: "Invalid post ID",
+    });
+  }
+  try {
+    const postResult = await db.query(
+      `
+      SELECT id FROM posts WHERE id = $1
+      `,
+      [postId],
+    );
+    if (!postResult.rows[0]) {
+      return res.status(404).json({
+        error: "Post not found",
+      });
+    }
+    const result = await db.query(
+      `
+      SELECT c.*, u.name as username
+      FROM comments c
+      JOIN users u ON c.user_id = u.id
+      WHERE c.post_id = $1
+      ORDER BY c.created_at DESC
+      `,
+      [postId],
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

@@ -80,10 +80,13 @@
 # Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
 
 # Add comment to the post
-POST http://localhost:3000/posts/2/comments
-content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
+# POST http://localhost:3000/posts/2/comments
+# content-type: application/json
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
 
-{
-    "content":"This is a comment on the post."
-}
+# {
+#     "content":"This is a comment on the post."
+# }
+
+GET http://localhost:3000/posts/2/comments
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4

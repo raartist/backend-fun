@@ -166,4 +166,46 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
+router.post("/:id/comment", authMiddleware, async (req, res) => {
+  const postId = Number(req.params.id);
+  const { content } = req.body;
+
+  if (Number.isNaN(postId)) {
+    return res.status(400).json({
+      error: "Invalid post ID",
+    });
+  }
+  if (!content?.trim()) {
+    return res.status(400).json({
+      error: "Content is required",
+    });
+  }
+  try {
+    const postResult = await db.query(
+      `
+      SELECT * FROM posts WHERE id = $1
+      `,
+      [postId],
+    );
+    if (!postResult.rows[0]) {
+      return res.status(404).json({
+        error: "Post not found",
+      });
+    }
+
+    const result = await db.query(
+      `
+      INSERT INTO comments(content, post_id, user_id)
+      VALUES($1, $2, $3)
+        RETURNING *
+      `,
+      [content, postId, req.user.id],
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

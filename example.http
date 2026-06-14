@@ -1,3 +1,5 @@
+# var token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
+
 //commands to run post service in powershell
 
 # POST http://localhost:3000/users
@@ -13,8 +15,8 @@
 # content-type: application/json
 
 # {
-#     "name":"Anuj",
-#     "email":"anuj@example.com",
+#     "name":"Prabhat",
+#     "email":"prabhat@example.com",
 #         "password":"1234"
 # }
 
@@ -22,7 +24,7 @@
 # content-type: application/json
 
 # {
-#     "email":"anuj@example.com",
+#     "email":"prabhat@example.com",
 #     "password":"1234"
 # }
 
@@ -74,5 +76,14 @@
 # }
 
 # delete post with id
-DELETE http://localhost:3000/posts/5
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
+# DELETE http://localhost:3000/posts/5
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
+
+# Add comment to the post
+POST http://localhost:3000/posts/2/comment
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
+
+{
+    "content":"This is a comment on the post."
+}

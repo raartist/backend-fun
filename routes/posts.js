@@ -99,7 +99,7 @@ router.patch("/:id", authMiddleware, async (req, res) => {
   try {
     const postResult = await db.query(
       `
-        SELECT * FROM posts WHERE id = $1
+        SELECT id FROM posts WHERE id = $1
         `,
       [postId],
     );
@@ -141,7 +141,7 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const postResult = await db.query(
       `
-            SELECT * FROM posts WHERE id = $1
+            SELECT id FROM posts WHERE id = $1
             `,
       [postId],
     );
@@ -166,7 +166,7 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-router.post("/:id/comment", authMiddleware, async (req, res) => {
+router.post("/:id/comments", authMiddleware, async (req, res) => {
   const postId = Number(req.params.id);
   const { content } = req.body;
 
@@ -183,7 +183,7 @@ router.post("/:id/comment", authMiddleware, async (req, res) => {
   try {
     const postResult = await db.query(
       `
-      SELECT * FROM posts WHERE id = $1
+      SELECT id FROM posts WHERE id = $1
       `,
       [postId],
     );

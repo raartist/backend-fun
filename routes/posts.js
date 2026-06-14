@@ -245,4 +245,96 @@ router.get("/:id/comments", authMiddleware, async (req, res) => {
   }
 });
 
+//patch comment
+router.patch("/comments/:id", authMiddleware, async (req, res) => {
+  const userId = req.user.id;
+  const commentId = Number(req.params.id);
+  const { content } = req.body;
+  if (Number.isNaN(commentId)) {
+    return res.status(400).json({
+      error: "Invalid comment ID",
+    });
+  }
+
+  if (content === undefined || typeof content !== "string" || content.trim() === "") {
+    return res.status(400).json({
+      error: "Content must be a non-empty string",
+    });
+  }
+
+  try {
+    const commentResult = await db.query(`SELECT id, user_id FROM comments WHERE id = $1`, [
+      commentId,
+    ]);
+    const comment = commentResult.rows[0];
+    if (!comment) {
+      return res.status(404).json({
+        error: "Comment not found",
+      });
+    }
+    if (comment.user_id !== userId) {
+      return res.status(403).json({
+        error: "You are not authorized to update this comment",
+      });
+    }
+
+    const updatedComment = await db.query(
+      `
+      UPDATE comments
+      SET content = $1
+      WHERE id = $2
+      RETURNING *
+      `,
+      [content, commentId],
+    );
+    res.json({
+      message: "Comment updated successfully",
+      comment: updatedComment.rows[0],
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+//delete comment
+router.delete("/comments/:id", authMiddleware, async (req, res) => {
+  const commentId = Number(req.params.id);
+  const userId = req.user.id;
+  if (Number.isNaN(commentId)) {
+    return res.status(400).json({
+      error: "Invalid comment ID",
+    });
+  }
+  try {
+    const commentResult = await db.query(
+      `
+      SELECT id, user_id FROM comments WHERE id = $1
+      `,
+      [commentId],
+    );
+    const comment = commentResult.rows[0];
+    if (!comment) {
+      return res.status(404).json({
+        error: "Comment not found",
+      });
+    }
+    if (comment.user_id !== userId) {
+      return res.status(403).json({
+        error: "You are not authorized to delete this comment",
+      });
+    }
+    const deletedComment = await db.query(`DELETE FROM comments WHERE id = $1 RETURNING *`, [
+      commentId,
+    ]);
+    res.json({
+      message: "Comment deleted successfully",
+      comment: deletedComment.rows[0],
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

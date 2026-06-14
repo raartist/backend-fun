@@ -88,5 +88,14 @@
 #     "content":"This is a comment on the post."
 # }
 
-GET http://localhost:3000/posts/2/comments
+# GET http://localhost:3000/posts/2/comments
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
+
+#update comment
+PATCH http://localhost:3000/posts/comments/4
+content-type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
+
+{
+    "content":"Updated comment content."
+}

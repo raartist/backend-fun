@@ -337,4 +337,94 @@ router.delete("/comments/:id", authMiddleware, async (req, res) => {
   }
 });
 
+//Likes routes
+router.post("/:id/like", authMiddleware, async (req, res) => {
+  const postId = Number(req.params.id);
+  const userId = req.user.id;
+  if (Number.isNaN(postId)) {
+    return res.status(400).json({
+      error: "Invalid post ID",
+    });
+  }
+  try {
+    const postResult = await db.query(
+      `
+      SELECT id FROM posts WHERE id = $1
+      `,
+      [postId],
+    );
+    if (!postResult.rows[0]) {
+      return res.status(404).json({
+        error: "Post not found",
+      });
+    }
+
+    const likeCheck = await db.query(
+      `
+      SELECT id FROM likes WHERE post_id = $1 AND user_id = $2
+      `,
+      [postId, userId],
+    );
+
+    if (likeCheck.rows[0]) {
+      return res.status(409).json({
+        error: "You have already liked this post",
+      });
+    }
+    const likeInsert = await db.query(
+      `
+      INSERT INTO likes (post_id, user_id) VALUES ($1, $2) RETURNING *
+      `,
+      [postId, userId],
+    );
+    res.status(201).json({
+      message: "Post liked successfully",
+      like: likeInsert.rows[0],
+    });
+  } catch (err) {
+    //postgres unique error code
+    if (err.code === "23505") {
+      return res.status(409).json({
+        error: "You have already liked this post",
+      });
+    }
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.delete("/:id/like", authMiddleware, async (req, res) => {
+  const postId = Number(req.params.id);
+  const userId = req.user.id;
+  if (Number.isNaN(postId)) {
+    return res.status(400).json({
+      error: "Invalid post ID",
+    });
+  }
+  try {
+    const likeResult = await db.query(
+      `
+      SELECT id FROM likes WHERE post_id = $1 AND user_id = $2
+      `,
+      [postId, userId],
+    );
+    if (!likeResult.rows[0]) {
+      return res.status(404).json({
+        error: "Like not found",
+      });
+    }
+    const deletedLike = await db.query(
+      `DELETE FROM likes WHERE post_id = $1 AND user_id = $2 RETURNING *`,
+      [postId, userId],
+    );
+    res.json({
+      message: "Like removed successfully",
+      like: deletedLike.rows[0],
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

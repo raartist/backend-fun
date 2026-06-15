@@ -92,10 +92,18 @@
 # Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
 
 #update comment
-PATCH http://localhost:3000/posts/comments/4
-content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
+# PATCH http://localhost:3000/posts/comments/4
+# content-type: application/json
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
 
-{
-    "content":"Updated comment content."
-}
+# {
+#     "content":"Updated comment content."
+# }
+
+# add like to the post
+# POST http://localhost:3000/posts/2/like
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTU0NTU1MywiZXhwIjoxNzgxNjMxOTUzfQ.ZCWhrJ_5up6lK_DJSbSFJ6s5mXcL9iOtn2hq7z7Lk5w
+
+#delete like from the post
+# DELETE http://localhost:3000/posts/2/like
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTU0NTU1MywiZXhwIjoxNzgxNjMxOTUzfQ.ZCWhrJ_5up6lK_DJSbSFJ6s5mXcL9iOtn2hq7z7Lk5w

@@ -427,4 +427,19 @@ router.delete("/:id/like", authMiddleware, async (req, res) => {
   }
 });
 
+//get likes count for a post
+router.get("/allLikes", authMiddleware, async (req, res) => {
+  try {
+    const likesResults = await db.query(
+      `
+      SELECT post_id, COUNT(*) as likes_count FROM likes GROUP BY post_id
+      `,
+    );
+    res.json({ likes: likesResults.rows });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

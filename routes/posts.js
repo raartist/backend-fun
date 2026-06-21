@@ -469,4 +469,23 @@ router.get("/getAllpostsWithLikesCount", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/popular", async (req, res) => {
+  try {
+    const result = await db.query(
+      `SELECT p.id, p.title, COUNT(l.id) as likes_count
+       FROM posts p LEFT JOIN likes l ON p.id = l.post_id 
+       GROUP BY p.id , p.title
+       ORDER BY likes_count DESC`,
+    );
+
+    res.status(200).json({
+      posts: result.rows,
+      count: result.rowCount,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

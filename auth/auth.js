@@ -12,7 +12,6 @@ function authMiddleware(req, res, next) {
   }
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    console.log(decoded, "decoded token");
     req.user = decoded;
   } catch (err) {
     console.error(err);
@@ -20,7 +19,6 @@ function authMiddleware(req, res, next) {
       message: "Invalid token!",
     });
   }
-  console.log("authorized user");
   next();
 }
 

@@ -1,3 +1,5 @@
+# var token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
+
 //commands to run post service in powershell
 
 # POST http://localhost:3000/users
@@ -13,8 +15,8 @@
 # content-type: application/json
 
 # {
-#     "name":"Anuj",
-#     "email":"anuj@example.com",
+#     "name":"Prabhat",
+#     "email":"prabhat@example.com",
 #         "password":"1234"
 # }
 
@@ -22,7 +24,7 @@
 # content-type: application/json
 
 # {
-#     "email":"anuj@example.com",
+#     "email":"ramu@example.com",
 #     "password":"1234"
 # }
 
@@ -45,11 +47,11 @@
 # post posts with Authorization: 
 # POST http://localhost:3000/posts
 # content-type: application/json
-# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJyYW11QGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxNzE3NTAzLCJleHAiOjE3ODE4MDM5MDN9.b3sNYCXnDcx5TDf9iDcSAfWoez3DZOl9O8YoX8pUODg
 
 # {
-#     "title":"My anuj second Post",
-#     "content":"This is the second content of my anuj post."
+#     "title":"My First Post",
+#     "content":"This is the first content of my rishabh post."
 # }
 
 # get all posts with username
@@ -74,5 +76,42 @@
 # }
 
 # delete post with id
-DELETE http://localhost:3000/posts/5
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
+# DELETE http://localhost:3000/posts/5
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJhbnVqQGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxMjg1MDI2LCJleHAiOjE3ODEzNzE0MjZ9.QWsRx6P3jQR1NogErJWv0D2OZEck2VockmJdB3Y3sbs
+
+# Add comment to the post
+# POST http://localhost:3000/posts/2/comments
+# content-type: application/json
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
+
+# {
+#     "content":"This is a comment on the post."
+# }
+
+# GET http://localhost:3000/posts/2/comments
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
+
+#update comment
+# PATCH http://localhost:3000/posts/comments/4
+# content-type: application/json
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTQzMjA0MywiZXhwIjoxNzgxNTE4NDQzfQ.mq2NcW6GbYpJm7k6N1t8k0tFUeWHDCYvICQ0lvmqmG4
+
+# {
+#     "content":"Updated comment content."
+# }
+
+# add like to the post
+# POST http://localhost:3000/posts/6/like
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJyYW11QGV4YW1wbGUuY29tIiwiaWF0IjoxNzgxNzE3NTAzLCJleHAiOjE3ODE4MDM5MDN9.b3sNYCXnDcx5TDf9iDcSAfWoez3DZOl9O8YoX8pUODg
+
+#delete like from the post
+# DELETE http://localhost:3000/posts/2/like
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTU0NTU1MywiZXhwIjoxNzgxNjMxOTUzfQ.ZCWhrJ_5up6lK_DJSbSFJ6s5mXcL9iOtn2hq7z7Lk5w
+
+#get all likes
+# GET http://localhost:3000/posts/allLikes
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTcxNDc4NSwiZXhwIjoxNzgxODAxMTg1fQ.JPGxRBaz6VOFr5l1GI2zkM2VBjfozp4zJsPiN_ZSsMA
+
+#get all posts with likes count
+GET http://localhost:3000/posts/getAllpostsWithLikesCount
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoicHJhYmhhdEBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTcxNDc4NSwiZXhwIjoxNzgxODAxMTg1fQ.JPGxRBaz6VOFr5l1GI2zkM2VBjfozp4zJsPiN_ZSsMA

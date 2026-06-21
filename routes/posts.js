@@ -432,10 +432,37 @@ router.get("/allLikes", authMiddleware, async (req, res) => {
   try {
     const likesResults = await db.query(
       `
-      SELECT post_id, COUNT(*) as likes_count FROM likes GROUP BY post_id
+      SELECT post_id, COUNT(*) as likes_count FROM likes 
+      GROUP BY post_id ORDER BY likes_count DESC
       `,
     );
     res.json({ likes: likesResults.rows });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/getAllpostsWithLikesCount", authMiddleware, async (req, res) => {
+  try {
+    const queryResult = await db.query(
+      `SELECT p.id, p.title, p.content, COUNT(l.id) AS likes_count
+       FROM posts p LEFT JOIN likes l 
+      ON l.post_id = p.id
+      GROUP BY p.id, p.title, p.content
+      ORDER BY likes_count DESC
+      `,
+    );
+
+    if (queryResult.rows.length === 0) {
+      res.status(404).send({
+        message: "Posts not found!",
+      });
+    }
+    res.status(200).send({
+      count: queryResult.rowCount,
+      posts: queryResult.rows,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });

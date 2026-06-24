@@ -45,28 +45,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
-  const { name, email } = req.body;
-
-  if (!name || !email) {
-    return res.status(400).json({ error: "Name and email are required" });
-  }
-
-  const result = await db.query(
-    `
-      INSERT INTO users(name,email)
-
-      VALUES($1,$2)
-
-      RETURNING *
-      `,
-
-    [name, email],
-  );
-
-  res.json(result.rows[0]);
-});
-
 router.patch("/:id", async (req, res) => {
   const id = req.params.id;
   const { name, email } = req.body;
@@ -98,6 +76,16 @@ router.patch("/:id", async (req, res) => {
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
+
+  if (
+    (!name && name.trim() === "") ||
+    (!email && email.trim() === "") ||
+    (!password && password.trim() === "")
+  ) {
+    res.status(400).json({
+      error: "Name, Email or password can not be empty!",
+    });
+  }
 
   const result = await db.query(
     `

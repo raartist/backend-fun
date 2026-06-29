@@ -30,8 +30,20 @@ router.post("/", authMiddleware, async (req, res) => {
 
 router.get("/", authMiddleware, async (req, res) => {
   const { userId } = req.query;
-  const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
+  const page = Number(req.query.page ?? 1);
+  const limit = Number(req.query.limit ?? 10);
+
+  if (!Number.isInteger(page) || page < 1) {
+    return res.status(400).json({
+      message: "Page must be a positive integer",
+    });
+  }
+
+  if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+    return res.status(400).json({
+      message: "Limit must be between 1 and 100",
+    });
+  }
 
   if (userId && Number.isNaN(Number(userId))) {
     return res.status(400).json({
@@ -39,43 +51,53 @@ router.get("/", authMiddleware, async (req, res) => {
     });
   }
   const offset = (page - 1) * limit;
+  const params = [limit, offset];
+  const countParams = [];
+
+  const tableFrom = " FROM posts p ";
+  const whereClause = ` WHERE p.user_id = $`;
 
   try {
     let query = `
       SELECT p.id, p.title, p.content, p.user_id, u.name as username
-        FROM posts p
+        ${tableFrom}
         JOIN users u ON p.user_id = u.id
     `;
-    const params = [limit, offset];
+
+    let resultsCountQuery = `SELECT COUNT(*) as posts_count ${tableFrom}`;
 
     if (userId) {
       params.push(userId);
-      query += ` WHERE p.user_id = $${params.length}`;
+      countParams.push(userId);
+
+      query += `${whereClause}${params.length}`;
+      resultsCountQuery += `${whereClause}1`;
     }
 
     query += ` ORDER BY p.id DESC LIMIT $1 OFFSET $2`;
 
     const result = await db.query(query, params);
-    res.json(result.rows);
+    const countResult = await db.query(resultsCountQuery, countParams);
+    const totalPosts = Number(countResult.rows[0].posts_count);
+    const totalPages = Math.ceil(totalPosts / limit);
+    const hasNextPage = page < totalPages;
+    const hasPreviousPage = page > 1;
+    res.json({
+      posts: result.rows,
+      pagination: {
+        page,
+        limit,
+        totalPosts,
+        totalPages,
+        hasNextPage,
+        hasPreviousPage,
+      },
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-//next improvement expected in above route
-// validate negative pagination values and lower bound and upper bound
-// it should be positive integer and can return 100 results in one shot
-// it should return the meta data also in below form
-// {
-//   "posts": [...],
-//   "page": 2,
-//   "limit": 10,
-//   "totalPosts": 95,
-//   "totalPages": 10,
-//   "hasNextPage": true,
-//   "hasPreviousPage": true
-// }
 
 router.get("/all-posts-with-username", authMiddleware, async (req, res) => {
   try {

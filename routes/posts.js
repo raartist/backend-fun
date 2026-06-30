@@ -29,7 +29,7 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 router.get("/", authMiddleware, async (req, res) => {
-  const { userId } = req.query;
+  const { userId, search } = req.query;
   const page = Number(req.query.page ?? 1);
   const limit = Number(req.query.limit ?? 10);
 
@@ -51,11 +51,12 @@ router.get("/", authMiddleware, async (req, res) => {
     });
   }
   const offset = (page - 1) * limit;
-  const params = [limit, offset];
+  const queryParams = [limit, offset];
   const countParams = [];
 
   const tableFrom = " FROM posts p ";
-  const whereClause = ` WHERE p.user_id = $`;
+  const conditions = [];
+  const countConditions = [];
 
   try {
     let query = `
@@ -67,16 +68,33 @@ router.get("/", authMiddleware, async (req, res) => {
     let resultsCountQuery = `SELECT COUNT(*) as posts_count ${tableFrom}`;
 
     if (userId) {
-      params.push(userId);
-      countParams.push(userId);
+      const parsedUserId = Number(userId);
+      if (!Number.isInteger(parsedUserId) || parsedUserId < 1) {
+        return res.status(400).json({ error: "Invalid user ID" });
+      }
 
-      query += `${whereClause}${params.length}`;
-      resultsCountQuery += `${whereClause}1`;
+      queryParams.push(parsedUserId);
+      countParams.push(parsedUserId);
+      conditions.push(`p.user_id = $${queryParams.length}`);
+      countConditions.push(`p.user_id = $${countParams.length}`);
+    }
+
+    if (search && search.trim() !== "") {
+      const searchTerm = `%${search.trim()}%`;
+      queryParams.push(searchTerm);
+      countParams.push(searchTerm);
+      conditions.push(`p.title ILIKE $${queryParams.length}`);
+      countConditions.push(`p.title ILIKE $${countParams.length}`);
+    }
+
+    if (conditions.length > 0) {
+      query += ` WHERE ${conditions.join(" AND ")}`;
+      resultsCountQuery += ` WHERE ${countConditions.join(" AND ")}`;
     }
 
     query += ` ORDER BY p.id DESC LIMIT $1 OFFSET $2`;
 
-    const result = await db.query(query, params);
+    const result = await db.query(query, queryParams);
     const countResult = await db.query(resultsCountQuery, countParams);
     const totalPosts = Number(countResult.rows[0].posts_count);
     const totalPages = Math.ceil(totalPosts / limit);

@@ -29,9 +29,17 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 router.get("/", authMiddleware, async (req, res) => {
-  const { userId, search } = req.query;
+  const { userId, search, sort } = req.query;
   const page = Number(req.query.page ?? 1);
   const limit = Number(req.query.limit ?? 10);
+
+  const sortWhitelist = {
+    newest: "p.id DESC",
+    oldest: "p.id ASC",
+    title: "p.title ASC",
+  };
+
+  const orderBy = sort ? sortWhitelist[sort] : sortWhitelist.newest;
 
   if (!Number.isInteger(page) || page < 1) {
     return res.status(400).json({
@@ -92,7 +100,12 @@ router.get("/", authMiddleware, async (req, res) => {
       resultsCountQuery += ` WHERE ${countConditions.join(" AND ")}`;
     }
 
-    query += ` ORDER BY p.id DESC LIMIT $1 OFFSET $2`;
+    if (sort && !sortWhitelist[sort]) {
+      return res.status(400).json({
+        error: "Invalid sort option. Allowed values: newest, oldest, title",
+      });
+    }
+    query += ` ORDER BY ${orderBy} LIMIT $1 OFFSET $2`;
 
     const result = await db.query(query, queryParams);
     const countResult = await db.query(resultsCountQuery, countParams);

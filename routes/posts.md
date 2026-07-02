@@ -199,3 +199,14 @@ Separate data retrieval from metadata (COUNT(\*)).
 Pagination metadata should describe the filtered dataset, not the entire table.
 Structure API responses so they're easy for the frontend to consume.
 Think about scalability—adding a new filter should require minimal changes.
+
+pre-aggregated table joins - to prevent join multiplication issue
+
+SELECT p.id, p.title, p.content, p.user_id, u.name AS username,
+COALESCE(l.likes_count, 0) AS likes_count,
+COALESCE(c.comments_count, 0) AS comments_count FROM posts p LEFT JOIN users u
+ON p.user_id = u.id
+LEFT JOIN (SELECT post_id, count(_) as likes_count FROM likes l GROUP BY post_id ) l
+on p.id = l.post_id LEFT JOIN (SELECT post_id, count(_) as comments_count FROM comments c
+GROUP BY post_id) c
+ON p.id = c.post_id

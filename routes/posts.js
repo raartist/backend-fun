@@ -29,9 +29,17 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 router.get("/", authMiddleware, async (req, res) => {
-  const { userId, search } = req.query;
+  const { userId, search, sort } = req.query;
   const page = Number(req.query.page ?? 1);
   const limit = Number(req.query.limit ?? 10);
+
+  const sortWhitelist = {
+    newest: "p.id DESC",
+    oldest: "p.id ASC",
+    title: "p.title ASC",
+  };
+
+  const orderBy = sort ? sortWhitelist[sort] : sortWhitelist.newest;
 
   if (!Number.isInteger(page) || page < 1) {
     return res.status(400).json({
@@ -59,10 +67,15 @@ router.get("/", authMiddleware, async (req, res) => {
   const countConditions = [];
 
   try {
+    const likes_summary = ` (SELECT post_id, COUNT(*) as likes_count FROM likes l GROUP BY post_id) l ON p.id = l.post_id`;
+    const comments_summary = ` (SELECT post_id, COUNT(*) AS comments_count FROM comments c GROUP BY post_id) c ON p.id = c.post_id`;
+
     let query = `
-      SELECT p.id, p.title, p.content, p.user_id, u.name as username
+      SELECT p.id, p.title, p.content, p.user_id, u.name as username, 
+      COALESCE(l.likes_count, 0) as likes_count,
+      COALESCE(c.comments_count, 0) as comments_count
         ${tableFrom}
-        JOIN users u ON p.user_id = u.id
+        JOIN users u ON p.user_id = u.id LEFT JOIN ${likes_summary} LEFT JOIN ${comments_summary}
     `;
 
     let resultsCountQuery = `SELECT COUNT(*) as posts_count ${tableFrom}`;
@@ -92,7 +105,13 @@ router.get("/", authMiddleware, async (req, res) => {
       resultsCountQuery += ` WHERE ${countConditions.join(" AND ")}`;
     }
 
-    query += ` ORDER BY p.id DESC LIMIT $1 OFFSET $2`;
+    if (sort && !sortWhitelist[sort]) {
+      return res.status(400).json({
+        error: "Invalid sort option. Allowed values: newest, oldest, title",
+      });
+    }
+    query += ` ORDER BY ${orderBy} LIMIT $1 OFFSET $2`;
+    console.log("final query ", query);
 
     const result = await db.query(query, queryParams);
     const countResult = await db.query(resultsCountQuery, countParams);
